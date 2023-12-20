@@ -9,5 +9,4 @@ public class CloudDiskApplication {
     public static void main(String[] args) {
         SpringApplication.run(CloudDiskApplication.class, args);
     }
-
 }
