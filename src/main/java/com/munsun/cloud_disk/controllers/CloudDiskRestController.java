@@ -1,6 +1,7 @@
 package com.munsun.cloud_disk.controllers;
 
 import com.munsun.cloud_disk.dto.out.FileDtoOut;
+import com.munsun.cloud_disk.dto.out.LoginPasswordHashDtoOut;
 import com.munsun.cloud_disk.service.FileStorage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -20,15 +21,16 @@ public class CloudDiskRestController {
     @GetMapping(value = "/file", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> getFile(@RequestParam String filename) {
         log.info("GET /file");
+        var file = storage.getFile(filename);
         return ResponseEntity
                 .ok()
-                .body(storage.getFile(filename));
+                //.contentType(MediaType.valueOf(file.getType()))
+                .body(file.getContent());
     }
 
     @PostMapping(value = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void saveFile(@RequestParam String filename,
-                         @RequestBody MultipartFile file,
-                         HttpServletRequest request)
+                         @RequestBody MultipartFile file)
     {
         log.info("POST /file");
         storage.addFile(filename, file);
@@ -41,8 +43,11 @@ public class CloudDiskRestController {
     }
 
     @PutMapping("/file")
-    public void updateFile(@RequestParam String filename) {
+    public void updateFile(@RequestParam("filename") String oldFilename,
+                           @RequestBody LoginPasswordHashDtoOut loginPasswordHashDtoOut)
+    {
         log.info("PUT /file");
+        storage.putFile(oldFilename, loginPasswordHashDtoOut.getFilename());
     }
 
     @GetMapping(value = "/list")
