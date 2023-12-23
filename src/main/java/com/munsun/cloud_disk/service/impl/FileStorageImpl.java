@@ -1,6 +1,7 @@
 package com.munsun.cloud_disk.service.impl;
 
 import com.munsun.cloud_disk.dto.out.FileDtoOut;
+import com.munsun.cloud_disk.exception.UploadFileException;
 import com.munsun.cloud_disk.model.File;
 import com.munsun.cloud_disk.service.FileStorage;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class FileStorageImpl implements FileStorage {
     }
 
     @Override
-    public void addFile(String filename, MultipartFile file) {
+    public void addFile(String filename, MultipartFile file) throws UploadFileException {
         try {
             var bytes = file.getBytes();
             var newFile = File.builder()
@@ -45,6 +46,7 @@ public class FileStorageImpl implements FileStorage {
             files.put(filename, newFile);
         } catch (IOException e) {
             log.error("Error reading");
+            throw new UploadFileException();
         }
     }
 

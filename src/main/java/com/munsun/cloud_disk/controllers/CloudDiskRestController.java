@@ -2,6 +2,7 @@ package com.munsun.cloud_disk.controllers;
 
 import com.munsun.cloud_disk.dto.out.FileDtoOut;
 import com.munsun.cloud_disk.dto.out.LoginPasswordHashDtoOut;
+import com.munsun.cloud_disk.exception.UploadFileException;
 import com.munsun.cloud_disk.service.FileStorage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -30,8 +31,7 @@ public class CloudDiskRestController {
 
     @PostMapping(value = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void saveFile(@RequestParam String filename,
-                         @RequestBody MultipartFile file)
-    {
+                         @RequestBody MultipartFile file) throws UploadFileException {
         log.info("POST /file");
         storage.addFile(filename, file);
     }

@@ -6,12 +6,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 @RestControllerAdvice
 public class ExceptionRestControllerAdvice {
-    @ExceptionHandler(value = {UserNotFoundException.class})
-    public ResponseEntity<Error> userNotFoundExceptionHandler(UserNotFoundException e) {
+    private final AtomicInteger counterErrors = new AtomicInteger();
+
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Error> exceptionHandler(Exception e) {
         return ResponseEntity
                 .badRequest()
-                .body(new Error(e.getMessage(), 0));
+                .body(new Error(e.getMessage(), counterErrors.getAndIncrement()));
     }
 }

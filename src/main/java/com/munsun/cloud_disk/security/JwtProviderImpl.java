@@ -49,7 +49,6 @@ public class JwtProviderImpl implements JwtProvider {
             return true;
         } catch (ExpiredJwtException expEx) {
             log.error("Token expired = {}", token);
-            System.out.println();
         } catch (UnsupportedJwtException unsEx) {
             log.error("Unsupported jwt = {}", token);
         } catch (MalformedJwtException mjEx) {
@@ -92,6 +91,6 @@ public class JwtProviderImpl implements JwtProvider {
     }
 
     public String resolveHeader(HttpServletRequest servletRequest) {
-        return ((HttpServletRequest) servletRequest).getHeader(secretHeader);
+        return servletRequest.getHeader(secretHeader);
     }
 }

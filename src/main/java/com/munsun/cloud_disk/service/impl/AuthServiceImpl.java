@@ -21,13 +21,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginPasswordDtoOut auth(LoginPasswordDtoIn loginPasswordDtoIn) throws UserNotFoundException, AuthException {
-        log.info("Try login: login={}", loginPasswordDtoIn.login());
+        log.info("Try credentials: login={}", loginPasswordDtoIn.login());
         User user = userRepository.findUserByLogin(loginPasswordDtoIn.login())
                 .orElseThrow(UserNotFoundException::new);
         if(user.getPassword().equals(loginPasswordDtoIn.password())) {
-            log.info("Try login success");
+            log.info("Try credentials success");
             return new LoginPasswordDtoOut(jwtProvider.generateAccessToken(loginPasswordDtoIn));
         }
-        throw new AuthException(1);
+        throw new AuthException(0, "Bad credentials");
     }
 }

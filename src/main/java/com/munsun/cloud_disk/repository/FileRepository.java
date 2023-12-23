@@ -1,12 +1,9 @@
 package com.munsun.cloud_disk.repository;
 
-import com.munsun.cloud_disk.model.User;
+import com.munsun.cloud_disk.model.File;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-public interface UserRepository {
-    Optional<User> findByLogin(String login);
+public interface FileRepository{
 }
