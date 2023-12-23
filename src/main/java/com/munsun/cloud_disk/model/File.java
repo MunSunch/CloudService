@@ -1,19 +1,26 @@
 package com.munsun.cloud_disk.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
 @Builder
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "files")
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    @Column()
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "content", nullable = false)
     private byte[] content;
 
-    @Column(name="type")
+    @Column(name="type", nullable = false)
     private String type;
 }

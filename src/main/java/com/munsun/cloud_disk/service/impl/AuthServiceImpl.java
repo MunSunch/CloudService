@@ -22,7 +22,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginPasswordDtoOut auth(LoginPasswordDtoIn loginPasswordDtoIn) throws UserNotFoundException, AuthException {
         log.info("Try credentials: login={}", loginPasswordDtoIn.login());
-        User user = userRepository.findUserByLogin(loginPasswordDtoIn.login())
+        User user = userRepository.findByLogin(loginPasswordDtoIn.login())
                 .orElseThrow(UserNotFoundException::new);
         if(user.getPassword().equals(loginPasswordDtoIn.password())) {
             log.info("Try credentials success");
