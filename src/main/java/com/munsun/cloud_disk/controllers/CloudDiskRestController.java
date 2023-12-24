@@ -3,14 +3,16 @@ package com.munsun.cloud_disk.controllers;
 import com.munsun.cloud_disk.dto.out.FileDtoOut;
 import com.munsun.cloud_disk.dto.out.LoginPasswordHashDtoOut;
 import com.munsun.cloud_disk.exception.UploadFileException;
+import com.munsun.cloud_disk.exception.UserNotFoundException;
 import com.munsun.cloud_disk.service.FileStorage;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -20,12 +22,12 @@ public class CloudDiskRestController {
     private FileStorage storage;
 
     @GetMapping(value = "/file", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> getFile(@RequestParam String filename) {
+    public ResponseEntity<?> getFile(@RequestParam String filename) throws FileNotFoundException {
         log.info("GET /file");
         var file = storage.getFile(filename);
         return ResponseEntity
                 .ok()
-                //.contentType(MediaType.valueOf(file.getType()))
+                .contentType(MediaType.valueOf(file.getType()))
                 .body(file.getContent());
     }
 
@@ -37,14 +39,14 @@ public class CloudDiskRestController {
     }
 
     @DeleteMapping("/file")
-    public void deleteFile(@RequestParam String filename) {
+    public void deleteFile(@RequestParam String filename) throws FileNotFoundException {
         log.info("DELETE /file");
         storage.removeFile(filename);
     }
 
     @PutMapping("/file")
     public void updateFile(@RequestParam("filename") String oldFilename,
-                           @RequestBody LoginPasswordHashDtoOut loginPasswordHashDtoOut)
+                           @RequestBody LoginPasswordHashDtoOut loginPasswordHashDtoOut) throws FileNotFoundException
     {
         log.info("PUT /file");
         storage.putFile(oldFilename, loginPasswordHashDtoOut.getFilename());
