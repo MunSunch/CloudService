@@ -4,6 +4,7 @@ import com.munsun.cloud_disk.model.File;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -12,7 +13,8 @@ import java.util.Optional;
 public interface FileRepository extends JpaRepository<File, Integer>{
     Optional<File> findByName(String name);
 
-    @Modifying
-    @Query(value = "UPDATE files set name = ?2 where name = ?1", nativeQuery = true)
-    void replaceName(String oldName, String newName);
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update files set name = :newFilename where name = :oldFilename", nativeQuery = true)
+    void replaceName(@Param("oldFilename") String oldName,
+                     @Param("newFilename") String newName);
 }

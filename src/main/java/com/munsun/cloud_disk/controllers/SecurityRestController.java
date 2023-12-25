@@ -20,14 +20,14 @@ public class SecurityRestController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public LoginPasswordDtoOut auth(@RequestBody LoginPasswordDtoIn loginPassword, Principal principal) throws UserNotFoundException, AuthException {
-        log.info("endpoint: POST /login; user={}", principal.getName());
+    public LoginPasswordDtoOut auth(@RequestBody LoginPasswordDtoIn loginPassword) throws UserNotFoundException, AuthException {
+        log.info("endpoint: POST /login");
         return authService.auth(loginPassword);
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestParam("auth-token") String authToken, Principal principal) {
-        log.info("endpoint: POST /logout; user={}", principal.getName());
+    public void logout(@RequestParam("auth-token") String authToken) {
+        log.info("endpoint: POST /logout");
         SecurityContextHolder.clearContext();
     }
 }
