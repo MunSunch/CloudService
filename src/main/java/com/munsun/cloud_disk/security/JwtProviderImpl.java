@@ -1,8 +1,6 @@
 package com.munsun.cloud_disk.security;
 
 import com.munsun.cloud_disk.dto.in.LoginPasswordDtoIn;
-import com.munsun.cloud_disk.exception.UserNotFoundException;
-import com.munsun.cloud_disk.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -12,6 +10,7 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +20,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@Setter
+@AllArgsConstructor
 @Slf4j
 @Service
 public class JwtProviderImpl implements JwtProvider {
@@ -40,6 +41,7 @@ public class JwtProviderImpl implements JwtProvider {
 
     @Override
     public boolean validateAccessToken(String token) {
+        log.info("validate token = {}", token);
         try{
             token = preparedToken(token);
             Jwts.parser()
@@ -65,6 +67,7 @@ public class JwtProviderImpl implements JwtProvider {
 
     @Override
     public String generateAccessToken(LoginPasswordDtoIn dto) {
+        log.info("generate new token");
         Date now = new Date();
         Date expiration = new Date(now.getTime() + secretKeyExpiration*1000);
         return Jwts.builder()
@@ -80,6 +83,7 @@ public class JwtProviderImpl implements JwtProvider {
     }
 
     public Authentication getAuthentification(String token) {
+        log.info("get authentication from token={}", token);
         token = preparedToken(token);
         var userLogin = Jwts.parser()
                 .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey)))
@@ -91,6 +95,7 @@ public class JwtProviderImpl implements JwtProvider {
     }
 
     public String resolveHeader(HttpServletRequest servletRequest) {
+        log.info("Retrieving a token from request's");
         return servletRequest.getHeader(secretHeader);
     }
 }

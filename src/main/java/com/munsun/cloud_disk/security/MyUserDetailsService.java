@@ -1,15 +1,15 @@
 package com.munsun.cloud_disk.security;
 
-import com.munsun.cloud_disk.exception.UserNotFoundException;
 import com.munsun.cloud_disk.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -17,7 +17,9 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user = userRepository.findByLogin(username).get();
+
+        var user = userRepository.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new User(user.getLogin(), user.getPassword(),
                 user.getRole().getPermissions());
     }

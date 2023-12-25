@@ -1,8 +1,9 @@
-package com.munsun.cloud_disk.service.units.repository;
+package com.munsun.cloud_disk.service.repository;
 
 import com.munsun.cloud_disk.model.Role;
 import com.munsun.cloud_disk.model.User;
 import com.munsun.cloud_disk.repository.UserRepository;
+import com.munsun.cloud_disk.service.PostgresContainer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
