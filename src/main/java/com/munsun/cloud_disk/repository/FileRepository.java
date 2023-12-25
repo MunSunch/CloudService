@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface FileRepository extends JpaRepository<File, Integer>{
     Optional<File> findByName(String name);
 
-    @Modifying(clearAutomatically = true)
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "update files set name = :newFilename where name = :oldFilename", nativeQuery = true)
     void replaceName(@Param("oldFilename") String oldName,
                      @Param("newFilename") String newName);

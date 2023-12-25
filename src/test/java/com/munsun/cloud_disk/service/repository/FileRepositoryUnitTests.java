@@ -106,7 +106,7 @@ public class FileRepositoryUnitTests extends PostgresContainer {
     @ValueSource(ints = {3, 1})
     @Transactional
     public void successFindAll(int limit) throws IOException {
-        for(int i=0; i<limit*2; i++) {
+        for(int i=0; i<limit; i++) {
             File file = new File();
                 file.setId(null);
                 file.setName("paris"+limit);

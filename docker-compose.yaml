@@ -11,7 +11,7 @@ services:
     build:
       context: ./
     environment:
-      - SPRING_DATASOURCE_URL = jdbc:postgresql://postgres/data
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/data
     ports:
       - 8080:8080
     depends_on:
