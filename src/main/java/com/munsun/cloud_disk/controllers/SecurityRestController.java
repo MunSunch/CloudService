@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,14 +20,14 @@ public class SecurityRestController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public LoginPasswordDtoOut auth(@RequestBody LoginPasswordDtoIn loginPassword) throws UserNotFoundException, AuthException {
-        log.info("POST /login");
+    public LoginPasswordDtoOut auth(@RequestBody LoginPasswordDtoIn loginPassword, Principal principal) throws UserNotFoundException, AuthException {
+        log.info("endpoint: POST /login; user={}", principal.getName());
         return authService.auth(loginPassword);
     }
 
     @PostMapping("/logout")
-    public void logout(@RequestParam("auth-token") String authToken) {
-        log.info("POST /logout");
+    public void logout(@RequestParam("auth-token") String authToken, Principal principal) {
+        log.info("endpoint: POST /logout; user={}", principal.getName());
         SecurityContextHolder.clearContext();
     }
 }

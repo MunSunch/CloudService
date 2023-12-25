@@ -25,12 +25,14 @@ public class FileStorageImpl implements FileStorage {
 
     @Override
     public File getFile(String filename) throws FileNotFoundException {
+        log.info("get file {}", filename);
         return repository.findByName(filename)
                 .orElseThrow(FileNotFoundException::new);
     }
 
     @Override
     public void addFile(String filename, MultipartFile file) throws UploadFileException {
+        log.info("save new file {}", filename);
         try {
             var bytes = file.getBytes();
             var newFile = File.builder()
@@ -47,6 +49,7 @@ public class FileStorageImpl implements FileStorage {
 
     @Override
     public void removeFile(String filename) throws FileNotFoundException {
+        log.info("delete file {}", filename);
         var file = repository.findByName(filename)
                         .orElseThrow(FileNotFoundException::new);
         repository.deleteById(file.getId());
@@ -54,11 +57,13 @@ public class FileStorageImpl implements FileStorage {
 
     @Override
     public void putFile(String oldName, String newName) throws FileNotFoundException {
+        log.info("replace old filename={} on new filename={}", oldName, newName);
         repository.replaceName(oldName, newName);
     }
 
     @Override
     public List<FileDtoOut> getFiles(Integer limit) {
+        log.info("getting all files in the amount={}", limit);
         return repository.findAll(Pageable.ofSize(limit))
                 .toList().stream()
                 .map(fileMapper::toDtoOut)
