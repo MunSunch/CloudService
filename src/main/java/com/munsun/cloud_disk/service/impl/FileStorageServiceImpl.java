@@ -1,26 +1,28 @@
 package com.munsun.cloud_disk.service.impl;
 
 import com.munsun.cloud_disk.dto.response.FileDtoOut;
+import com.munsun.cloud_disk.exception.FileNotFoundException;
 import com.munsun.cloud_disk.exception.UploadFileException;
 import com.munsun.cloud_disk.mapper.FileMapper;
 import com.munsun.cloud_disk.model.File;
 import com.munsun.cloud_disk.repository.FileRepository;
-import com.munsun.cloud_disk.service.FileStorage;
-import lombok.AllArgsConstructor;
+import com.munsun.cloud_disk.service.FileStorageService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Transactional
 @Service
-public class FileStorageImpl implements FileStorage {
+public class FileStorageServiceImpl implements FileStorageService {
     private final FileRepository repository;
     private final FileMapper fileMapper;
 
@@ -28,7 +30,7 @@ public class FileStorageImpl implements FileStorage {
     public File getFile(String filename) throws FileNotFoundException {
         log.info("get file {}", filename);
         return repository.findByName(filename)
-                .orElseThrow(FileNotFoundException::new);
+                .orElseThrow(() -> new FileNotFoundException("Error upload file"));
     }
 
     @Override
@@ -44,7 +46,7 @@ public class FileStorageImpl implements FileStorage {
             repository.save(newFile);
         } catch (IOException e) {
             log.error("Error reading");
-            throw new UploadFileException(0, "Failed load file");
+            throw new UploadFileException("Failed load file");
         }
     }
 
@@ -52,15 +54,17 @@ public class FileStorageImpl implements FileStorage {
     public void removeFile(String filename) throws FileNotFoundException {
         log.info("delete file {}", filename);
         var file = repository.findByName(filename)
-                        .orElseThrow(FileNotFoundException::new);
+                        .orElseThrow(() -> new FileNotFoundException("Error delete file"));
         repository.deleteById(file.getId());
     }
 
-    @Transactional
     @Override
     public void putFile(String oldName, String newName) throws FileNotFoundException {
         log.info("replace old filename={} on new filename={}", oldName, newName);
-        repository.replaceName(oldName, newName);
+        var file = repository.findByName(oldName)
+                        .orElseThrow(() -> new FileNotFoundException("Error upload file"));
+        file.setName(newName);
+        repository.save(file);
     }
 
     @Override

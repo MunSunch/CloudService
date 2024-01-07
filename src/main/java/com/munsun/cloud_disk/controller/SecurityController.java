@@ -2,32 +2,37 @@ package com.munsun.cloud_disk.controller;
 
 import com.munsun.cloud_disk.dto.response.LoginPasswordDtoOut;
 import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
-import com.munsun.cloud_disk.exception.AuthException;
-import com.munsun.cloud_disk.exception.UserNotFoundException;
+import com.munsun.cloud_disk.exception.AuthenticationException;
+import com.munsun.cloud_disk.exception.JwtFilterAuthException;
 import com.munsun.cloud_disk.service.AuthService;
-import lombok.AllArgsConstructor;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 public class SecurityController {
-    private AuthService authService;
+    private final AuthService authService;
 
     @PostMapping("/login")
-    public LoginPasswordDtoOut authenticate(@RequestBody LoginPasswordDtoIn loginPassword) throws UserNotFoundException, AuthException {
+    public ResponseEntity<LoginPasswordDtoOut> authenticate(@RequestBody @Valid LoginPasswordDtoIn loginPassword) throws AuthenticationException {
         log.info("endpoint: POST /login");
-        return authService.authenticate(loginPassword);
+        return ResponseEntity
+                .ok(authService.authenticate(loginPassword));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestParam("auth-token") String authToken) {
+    @GetMapping("/logout")
+    public ResponseEntity<Void> logout() {
         log.info("endpoint: POST /logout");
-        authService.logout(authToken);
+        authService.logout();
         return ResponseEntity
-                .noContent()
+                .ok()
                 .build();
     }
 }

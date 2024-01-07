@@ -1,65 +1,75 @@
 package com.munsun.cloud_disk.controller;
 
 import com.munsun.cloud_disk.dto.response.FileDtoOut;
-import com.munsun.cloud_disk.dto.response.LoginPasswordHashDtoOut;
+import com.munsun.cloud_disk.dto.request.LoginPasswordHash;
+import com.munsun.cloud_disk.exception.FileNotFoundException;
 import com.munsun.cloud_disk.exception.UploadFileException;
-import com.munsun.cloud_disk.service.FileStorage;
-import lombok.AllArgsConstructor;
+import com.munsun.cloud_disk.service.FileStorageService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Validated
 @RestController
 public class CloudDiskController {
-    private FileStorage storage;
+    private final FileStorageService storage;
 
     @GetMapping(value = "/file", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> getFile(@RequestParam String filename) throws FileNotFoundException {
+    public ResponseEntity<Resource> getFile(@RequestParam @NotBlank String filename) throws FileNotFoundException {
         log.info("endpoint: GET /file");
         var file = storage.getFile(filename);
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.valueOf(file.getType()))
-                .body(file.getContent());
+                .body(new ByteArrayResource(file.getContent()));
     }
 
     @PostMapping(value = "/file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> saveFile(@RequestParam String filename,
-                         @RequestBody MultipartFile file) throws UploadFileException
+    public ResponseEntity<Void> saveFile(@RequestParam @NotBlank String filename,
+                         @RequestParam("file") MultipartFile file) throws UploadFileException
     {
         log.info("endpoint: POST /file");
         storage.addFile(filename, file);
         return ResponseEntity
-                .noContent()
+                .ok()
                 .build();
     }
 
     @DeleteMapping("/file")
-    public ResponseEntity<Void> deleteFile(@RequestParam String filename) throws FileNotFoundException {
+    public ResponseEntity<Void> deleteFile(@RequestParam @NotBlank String filename) throws FileNotFoundException {
         log.info("endpoint: DELETE /file");
         storage.removeFile(filename);
         return ResponseEntity
-                .noContent()
+                .ok()
                 .build();
     }
 
     @PutMapping("/file")
-    public void updateFile(@RequestParam("filename") String oldFilename,
-                           @RequestBody LoginPasswordHashDtoOut loginPasswordHashDtoOut) throws FileNotFoundException
+    public ResponseEntity<Void> updateFile(@RequestParam("filename") @NotBlank String oldFilename,
+                           @RequestBody @Valid LoginPasswordHash loginPasswordHash) throws FileNotFoundException
     {
         log.info("endpoint: PUT /file");
-        storage.putFile(oldFilename, loginPasswordHashDtoOut.getFilename());
+        storage.putFile(oldFilename, loginPasswordHash.filename());
+        return ResponseEntity
+                .ok()
+                .build();
     }
 
     @GetMapping("/list")
-    public List<FileDtoOut> getFiles(@RequestParam Integer limit) {
+    public List<FileDtoOut> getFiles(@RequestParam @Positive Integer limit) {
         log.info("endpoint: GET /list");
         return storage.getFiles(limit);
     }

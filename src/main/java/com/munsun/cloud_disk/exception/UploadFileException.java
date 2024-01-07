@@ -1,7 +1,9 @@
 package com.munsun.cloud_disk.exception;
 
 public class UploadFileException extends Exception{
-    public UploadFileException(int id, String message) {
-        super(message);
+    private static final String DEFAULT_PREFIX_MESSAGE = "Error upload file: ";
+
+    public UploadFileException(String message) {
+        super(DEFAULT_PREFIX_MESSAGE + message);
     }
 }
