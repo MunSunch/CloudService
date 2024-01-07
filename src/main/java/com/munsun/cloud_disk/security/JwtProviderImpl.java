@@ -1,6 +1,6 @@
 package com.munsun.cloud_disk.security;
 
-import com.munsun.cloud_disk.dto.in.LoginPasswordDtoIn;
+import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

@@ -1,4 +1,4 @@
-package com.munsun.cloud_disk.dto.out;
+package com.munsun.cloud_disk.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

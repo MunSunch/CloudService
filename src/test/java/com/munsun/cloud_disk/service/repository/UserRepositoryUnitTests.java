@@ -1,6 +1,6 @@
 package com.munsun.cloud_disk.service.repository;
 
-import com.munsun.cloud_disk.model.Role;
+import com.munsun.cloud_disk.model.enums.Role;
 import com.munsun.cloud_disk.model.User;
 import com.munsun.cloud_disk.repository.UserRepository;
 import com.munsun.cloud_disk.service.PostgresContainer;

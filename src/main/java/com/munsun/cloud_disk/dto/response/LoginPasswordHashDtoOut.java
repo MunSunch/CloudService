@@ -1,4 +1,4 @@
-package com.munsun.cloud_disk.dto.out;
+package com.munsun.cloud_disk.dto.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

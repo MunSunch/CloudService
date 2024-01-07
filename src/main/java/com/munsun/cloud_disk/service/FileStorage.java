@@ -1,8 +1,7 @@
 package com.munsun.cloud_disk.service;
 
-import com.munsun.cloud_disk.dto.out.FileDtoOut;
+import com.munsun.cloud_disk.dto.response.FileDtoOut;
 import com.munsun.cloud_disk.exception.UploadFileException;
-import com.munsun.cloud_disk.exception.UserNotFoundException;
 import com.munsun.cloud_disk.model.File;
 import org.springframework.web.multipart.MultipartFile;
 

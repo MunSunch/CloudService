@@ -1,8 +1,8 @@
 package com.munsun.cloud_disk.service.impl;
 
-import com.munsun.cloud_disk.dto.out.FileDtoOut;
+import com.munsun.cloud_disk.dto.response.FileDtoOut;
 import com.munsun.cloud_disk.exception.UploadFileException;
-import com.munsun.cloud_disk.mapping.FileMapper;
+import com.munsun.cloud_disk.mapper.FileMapper;
 import com.munsun.cloud_disk.model.File;
 import com.munsun.cloud_disk.repository.FileRepository;
 import com.munsun.cloud_disk.service.FileStorage;

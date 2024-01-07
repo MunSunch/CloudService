@@ -1,4 +1,4 @@
-package com.munsun.cloud_disk.model;
+package com.munsun.cloud_disk.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

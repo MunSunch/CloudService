@@ -1,6 +1,6 @@
-package com.munsun.cloud_disk.mapping;
+package com.munsun.cloud_disk.mapper;
 
-import com.munsun.cloud_disk.dto.out.FileDtoOut;
+import com.munsun.cloud_disk.dto.response.FileDtoOut;
 import com.munsun.cloud_disk.model.File;
 
 public interface FileMapper {

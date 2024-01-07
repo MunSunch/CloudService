@@ -1,9 +1,9 @@
 package com.munsun.cloud_disk.service.services;
 
-import com.munsun.cloud_disk.dto.in.LoginPasswordDtoIn;
+import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
 import com.munsun.cloud_disk.exception.AuthException;
 import com.munsun.cloud_disk.exception.UserNotFoundException;
-import com.munsun.cloud_disk.model.Role;
+import com.munsun.cloud_disk.model.enums.Role;
 import com.munsun.cloud_disk.model.User;
 import com.munsun.cloud_disk.repository.UserRepository;
 import com.munsun.cloud_disk.security.JwtProvider;
@@ -35,7 +35,7 @@ public class AuthServiceImplUnitTests {
         Mockito.when(userRepository.findByLogin(expected.login()))
                 .thenReturn(Optional.of(testUser));
 
-        Assertions.assertThrowsExactly(AuthException.class, () -> authService.auth(expected));
+        Assertions.assertThrowsExactly(AuthException.class, () -> authService.authenticate(expected));
     }
 
     @Test
@@ -47,7 +47,7 @@ public class AuthServiceImplUnitTests {
                 .thenReturn(Optional.of(testUser));
         Mockito.when(jwtProvider.generateAccessToken(Mockito.any())).thenReturn("token");
 
-        var actual = authService.auth(expected);
+        var actual = authService.authenticate(expected);
         Assertions.assertNotNull(actual.authToken());
     }
 }

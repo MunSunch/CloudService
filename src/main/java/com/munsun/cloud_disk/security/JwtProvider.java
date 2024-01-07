@@ -1,6 +1,6 @@
 package com.munsun.cloud_disk.security;
 
-import com.munsun.cloud_disk.dto.in.LoginPasswordDtoIn;
+import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
 
 public interface JwtProvider {
     boolean validateAccessToken(String token);

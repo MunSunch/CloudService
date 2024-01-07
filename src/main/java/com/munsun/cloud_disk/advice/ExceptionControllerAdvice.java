@@ -1,18 +1,16 @@
-package com.munsun.cloud_disk.controllers;
+package com.munsun.cloud_disk.advice;
 
-import com.munsun.cloud_disk.dto.out.Error;
-import com.munsun.cloud_disk.exception.UserNotFoundException;
+import com.munsun.cloud_disk.dto.response.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Slf4j
 @RestControllerAdvice
-public class ExceptionRestControllerAdvice {
+public class ExceptionControllerAdvice {
     private final AtomicInteger counterErrors = new AtomicInteger();
 
     @ExceptionHandler(value = {Exception.class})
