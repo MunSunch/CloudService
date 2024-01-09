@@ -23,28 +23,45 @@ docker compose up
 ## Примеры запуска
 Вход в систему от имени администратора
 
-![](img/login.png)
+![](img/front/login.png)
 
 Интерфейс пользователя
 
-![](img/main_page.png)
+![](img/front/main_page.png)
 
 Загрузка файлов в хранилище
 
-![](img/load_file_to_main_page.png)
+![](img/front/load_file_to_main_page.png)
 
 Переименование файла в хранилище
 
-![](img/rename_file.png)
+![](img/front/rename_file.png)
 
 Выгрузка файлов 
 
-![](img/download_file.png)
+![](img/front/download_file.png)
 
 Удаление файла
 
-![](img/remove_file.png)
+![](img/front/remove_file.png)
 
 Работа с несколькими файлами
 
-![](img/download_files.png)
+![](img/front/download_files.png)
+
+# Примеры запуска без клиента
+Успешный вход от имени администратора
+
+![](img/backend/login.png)
+
+Получение отрицательного числа файлов из хранилища
+
+![](img/backend/error_get_files.png)
+
+Загрузка файла с истекшим токеном аутентификации
+
+![](img/backend/error_load.png)
+
+Удаление несуществующего файла
+
+![](img/backend/remove_file_error.png)
