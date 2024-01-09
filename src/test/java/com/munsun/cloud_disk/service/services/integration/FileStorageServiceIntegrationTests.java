@@ -38,7 +38,7 @@ public class FileStorageServiceIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void successGetFile() throws FileNotFoundException, com.munsun.cloud_disk.exception.FileNotFoundException {
+    public void successGetFile() throws com.munsun.cloud_disk.exception.FileNotFoundException {
         fileRepository.save(file);
         var actualFile = fileStorage.getFile(file.getName());
         Assertions.assertNotNull(actualFile.getId());
@@ -46,7 +46,7 @@ public class FileStorageServiceIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void failedGetNotExistsFile() throws FileNotFoundException {
+    public void failedGetNotExistsFile() {
         Assertions.assertThrowsExactly(FileNotFoundException.class, ()-> {
             fileStorage.getFile(file.getName());
         });
@@ -74,7 +74,7 @@ public class FileStorageServiceIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void successRemoveFile() throws FileNotFoundException, com.munsun.cloud_disk.exception.FileNotFoundException {
+    public void successRemoveFile() throws com.munsun.cloud_disk.exception.FileNotFoundException {
         fileRepository.save(file);
         fileStorage.removeFile(file.getName());
         var actualFile = fileRepository.findByName(file.getName());
@@ -84,7 +84,7 @@ public class FileStorageServiceIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void failedRemoveNotExistsFile() throws FileNotFoundException {
+    public void failedRemoveNotExistsFile() {
         Assertions.assertThrowsExactly(FileNotFoundException.class, () ->
             fileStorage.removeFile(file.getName())
         );
@@ -92,7 +92,7 @@ public class FileStorageServiceIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void successPutFilename() throws FileNotFoundException, UserNotFoundException, com.munsun.cloud_disk.exception.FileNotFoundException {
+    public void successPutFilename() throws com.munsun.cloud_disk.exception.FileNotFoundException {
         fileRepository.save(file);
         String oldName = file.getName();
         String newName = "new" + file.getName();
@@ -106,7 +106,7 @@ public class FileStorageServiceIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void failedPutNotExistsFile() throws FileNotFoundException, UserNotFoundException {
+    public void failedPutNotExistsFile() {
         String oldName = file.getName();
         String newName = "new" + file.getName();
 

@@ -3,7 +3,6 @@ package com.munsun.cloud_disk.service.services.integration;
 import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
 import com.munsun.cloud_disk.exception.AuthenticationException;
 import com.munsun.cloud_disk.exception.JwtFilterAuthException;
-import com.munsun.cloud_disk.exception.UserNotFoundException;
 import com.munsun.cloud_disk.model.enums.Role;
 import com.munsun.cloud_disk.model.User;
 import com.munsun.cloud_disk.repository.UserRepository;
@@ -24,7 +23,7 @@ public class AuthServiceImplIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void failedAuthentication_InvalidPassword() throws UserNotFoundException, JwtFilterAuthException {
+    public void failedAuthentication_InvalidPassword() {
         var expected = new LoginPasswordDtoIn("testLogin", "testPassword");
         var testUser = new User(1, "testLogin", "password", Role.USER);
             userRepository.save(testUser);
@@ -33,7 +32,7 @@ public class AuthServiceImplIntegrationTests extends PostgresContainer {
 
     @Test
     @Transactional
-    public void successAuthentication() throws UserNotFoundException, JwtFilterAuthException, AuthenticationException {
+    public void successAuthentication() throws AuthenticationException {
         var expected = new LoginPasswordDtoIn("testLogin", "testPassword");
         var testUser = new User(null, "testLogin", "testPassword", Role.USER);
         userRepository.save(testUser);

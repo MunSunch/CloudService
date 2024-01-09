@@ -29,7 +29,7 @@ public class AuthServiceImplUnitTests {
     private AuthServiceImpl authService;
 
     @Test
-    public void failedAuthentication_InvalidPassword() throws UserNotFoundException, JwtFilterAuthException {
+    public void failedAuthentication_InvalidPassword() {
         var expected = new LoginPasswordDtoIn("testLogin", "testPassword");
         var testUser = new User(1, "testLogin", "password", Role.USER);
 
