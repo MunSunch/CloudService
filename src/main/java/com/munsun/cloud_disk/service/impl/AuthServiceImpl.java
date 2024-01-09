@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginPasswordDtoOut authenticate(LoginPasswordDtoIn loginPasswordDtoIn) throws AuthenticationException {
         log.info("Try check credentials: login={}", loginPasswordDtoIn.login());
         try {
-            User user = userRepository.findByLogin(loginPasswordDtoIn.login())
+            var user = userRepository.findByLogin(loginPasswordDtoIn.login())
                     .orElseThrow(UserNotFoundException::new);
             if(user.getPassword().equals(loginPasswordDtoIn.password())) {
                 log.info("Try check credentials success");

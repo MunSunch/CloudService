@@ -17,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebMvc
@@ -28,14 +29,13 @@ public class SecurityConfig {
 
     private static final String AUTHENTICATION_ENTRY_POINT = "/login";
 
-    @Value("${security.access.allowed_origin_patterns}")
-    private String allowedOriginPatterns;
     @Value("${security.access.allowed_methods}")
     private String allowedMethods;
     @Value("${security.access.allowed_headers}")
     private String allowedHeaders;
     @Value("${security.access.outer_source.url}")
     private String allowedOuterSource;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -61,9 +61,9 @@ public class SecurityConfig {
     CorsConfigurationSource myWebsiteConfigurationSource() {
         var configuration = new CorsConfiguration();
             configuration.setAllowCredentials(true);
-            configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
-            configuration.setAllowedMethods(Arrays.asList("*"));
-            configuration.setAllowedHeaders(Arrays.asList("*"));
+            configuration.setAllowedOrigins(Collections.singletonList(allowedOuterSource));
+            configuration.setAllowedMethods(List.of(allowedMethods));
+            configuration.setAllowedHeaders(List.of(allowedHeaders));
         var source = new UrlBasedCorsConfigurationSource();
             source.registerCorsConfiguration("/**", configuration);
         return source;

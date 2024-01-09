@@ -3,15 +3,11 @@ package com.munsun.cloud_disk.controller;
 import com.munsun.cloud_disk.dto.response.LoginPasswordDtoOut;
 import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
 import com.munsun.cloud_disk.exception.AuthenticationException;
-import com.munsun.cloud_disk.exception.JwtFilterAuthException;
 import com.munsun.cloud_disk.service.AuthService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -27,9 +23,9 @@ public class SecurityController {
                 .ok(authService.authenticate(loginPassword));
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        log.info("endpoint: POST /logout");
+    @GetMapping("/login")
+    public ResponseEntity<Void> logout(@RequestParam String logout) {
+        log.info("endpoint: GET /logout");
         authService.logout();
         return ResponseEntity
                 .ok()
