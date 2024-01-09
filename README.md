@@ -1,7 +1,8 @@
 # Облачное хранилище
 ## Описание задания: [ссылка](https://github.com/netology-code/jd-homeworks/blob/master/diploma/cloudservice.md)
 ## Описание решения
-Backend сервис для хранения файлов, взаимодействует с frontend по принципам REST. Особенностью проекта является
+Backend сервис для хранения файлов, взаимодействует с [frontend](https://github.com/netology-code/jd-homeworks/tree/master/diploma/netology-diplom-frontend)
+по принципам REST. Особенностью проекта является
 применение JWT аутентификации, реализация которой выполнена внутри самого сервиса. Используемые технологии Spring Boot 3.x,
 Java 17, Docker, Liquebase, PostgreSQL, JUnit, Mockito, Testcontainers.
 ## Перед началом работы
@@ -20,3 +21,30 @@ mvn clean package --Dskiptests
 docker compose up
 ```
 ## Примеры запуска
+Вход в систему от имени администратора
+
+![](img/login.png)
+
+Интерфейс пользователя
+
+![](img/main_page.png)
+
+Загрузка файлов в хранилище
+
+![](img/load_file_to_main_page.png)
+
+Переименование файла в хранилище
+
+![](img/rename_file.png)
+
+Выгрузка файлов 
+
+![](img/download_file.png)
+
+Удаление файла
+
+![](img/remove_file.png)
+
+Работа с несколькими файлами
+
+![](img/download_files.png)
