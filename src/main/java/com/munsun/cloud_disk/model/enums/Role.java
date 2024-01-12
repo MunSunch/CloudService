@@ -1,4 +1,4 @@
-package com.munsun.cloud_disk.model;
+package com.munsun.cloud_disk.model.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,7 +11,7 @@ public enum Role {
     USER(Set.of("read")),
     ADMIN(Set.of("read", "write"));
 
-    private Set<String> permissions;
+    private final Set<String> permissions;
 
     Role(Set<String> permissions) {
         this.permissions = permissions;

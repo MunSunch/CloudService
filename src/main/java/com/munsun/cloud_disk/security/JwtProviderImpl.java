@@ -1,6 +1,7 @@
 package com.munsun.cloud_disk.security;
 
-import com.munsun.cloud_disk.dto.in.LoginPasswordDtoIn;
+import com.munsun.cloud_disk.dto.request.LoginPasswordDtoIn;
+import com.munsun.cloud_disk.exception.JwtFilterAuthException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -9,10 +10,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class JwtProviderImpl implements JwtProvider {
@@ -33,11 +33,6 @@ public class JwtProviderImpl implements JwtProvider {
     private String secretHeader;
 
     private final MyUserDetailsService userDetailsService;
-
-    @Autowired
-    public JwtProviderImpl(MyUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
 
     @Override
     public boolean validateAccessToken(String token) {
@@ -57,11 +52,15 @@ public class JwtProviderImpl implements JwtProvider {
             log.error("Malformed jwt = {}", token);
         } catch (SignatureException sEx) {
             log.error("Invalid signature = {}", token);
+        } catch (JwtFilterAuthException e) {
+            log.error("Token is empty or header with the token is missing");
         }
         return false;
     }
 
-    private String preparedToken(String token) {
+    private String preparedToken(String token) throws JwtFilterAuthException {
+        if(token.isEmpty())
+            throw new JwtFilterAuthException("Token is empty");
         return token.substring("Bearer ".length());
     }
 
@@ -84,7 +83,11 @@ public class JwtProviderImpl implements JwtProvider {
 
     public Authentication getAuthentification(String token) {
         log.info("get authentication from token={}", token);
-        token = preparedToken(token);
+        try {
+            token = preparedToken(token);
+        } catch (JwtFilterAuthException e) {
+            return null;
+        }
         var userLogin = Jwts.parser()
                 .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey)))
                 .build()

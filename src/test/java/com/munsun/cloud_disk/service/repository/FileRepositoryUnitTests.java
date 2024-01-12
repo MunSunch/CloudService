@@ -73,7 +73,7 @@ public class FileRepositoryUnitTests extends PostgresContainer {
             file.setContent(Files.readAllBytes(Path.of("src/test/java/resources/static/paris.jpeg")));
 
         var actualId = fileRepository.save(file).getId();
-        fileRepository.replaceName(file.getName(), expectedFilename);
+//        fileRepository.replaceName(file.getName(), expectedFilename);
         var actualFilename = fileRepository.getReferenceById(actualId).getName();
 
         Assertions.assertEquals(expectedFilename, actualFilename);

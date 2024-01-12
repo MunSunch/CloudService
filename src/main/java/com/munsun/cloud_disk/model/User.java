@@ -1,5 +1,6 @@
 package com.munsun.cloud_disk.model;
 
+import com.munsun.cloud_disk.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

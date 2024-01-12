@@ -1,7 +1,7 @@
-package com.munsun.cloud_disk.mapping.impl;
+package com.munsun.cloud_disk.mapper.impl;
 
-import com.munsun.cloud_disk.dto.out.FileDtoOut;
-import com.munsun.cloud_disk.mapping.FileMapper;
+import com.munsun.cloud_disk.dto.response.FileDtoOut;
+import com.munsun.cloud_disk.mapper.FileMapper;
 import com.munsun.cloud_disk.model.File;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
